@@ -43,6 +43,7 @@
     <Compile Include="Cliente.cs" />
     <Compile Include="Controlador.cs" />
     <Compile Include="Cuenta.cs" />
+    <Compile Include="Cuentas.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
