@@ -81,15 +81,24 @@ namespace ej3
 
         public PuntajePartida Finalizar()
         {
+            iFin = DateTime.Now;
+
+            return PuntajeFinal();
+        }
+
+
+        public PuntajePartida PuntajeFinal()
+        {
             PuntajePartida puntaje;
-            puntaje.inicio = iInicio.ToShortDateString();
-            puntaje.fin = iFin.ToShortDateString();
+
+            puntaje.jugador = iNombreJugador;
+            puntaje.inicio = iInicio.ToString();
+            puntaje.fin = iFin.ToString();
             puntaje.duracion = (iFin - iInicio).Duration();
             puntaje.fallos = iFallosActuales.ToString();
             puntaje.resultado = iEstado.ToString();
 
             return puntaje;
         }
-
     }
 }

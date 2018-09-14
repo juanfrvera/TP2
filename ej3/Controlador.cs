@@ -7,8 +7,6 @@ namespace ej3
 {
     class Controlador
     {
-
-
         public static string IniciarPartida(string pNombre)
         {
             return Juego.IniciarPartida(pNombre);
@@ -23,6 +21,9 @@ namespace ej3
         {
             return Juego.FinalizarPartida();
         }
-
+        public static PuntajePartida[] MejoresPuntajes()
+        {
+            return Juego.MejoresPuntajes();
+        }
     }
 }

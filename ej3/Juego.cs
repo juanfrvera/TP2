@@ -12,7 +12,18 @@ namespace ej3
 
         private static Partida[] cMejoresPuntajes;
 
-        private static string[] cPalabras = { "HOLA", "COMETA", "ESTERNOCLEIDOMASTOIDEO", "TANQUE" };
+        private static string[] cPalabras = {
+            "UNO", "COMETA", "TANQUE",//3
+            "TERMO","ANTEOJOS","ESTRELLA",//6
+            "PALABRA", "PIEDRA", "INTENTO",//9
+            "RAVIOLES", "ALEMANIA", "NACIMIENTO",//12
+            "ESCOBA", "BLANCO", "NEGRO",//15
+            "CONTROLADOR","PIZARRA","CONGRESO",//18
+            "NEUTRONES", "NEBULOSA", "PECADO",//21
+            "OBSIDIANA", "DIAMANTE", "MONO",//24
+            "MURCIELAGO","PANTERA","CALAVERA",//27
+            "MALETA","ZAPATILLA","TREINTA"//30
+        };
 
         static Juego()
         {
@@ -41,7 +52,7 @@ namespace ej3
                 cMejoresPuntajes[i + 1] = cMejoresPuntajes[i];
                 i--;
             }
-            cMejoresPuntajes[i] = pPartida;
+            cMejoresPuntajes[i+1] = pPartida;
         }
 
 
@@ -51,12 +62,23 @@ namespace ej3
             puntaje = cPartidaActual.Finalizar();
             if (puntaje.resultado == "Ganada")
             {
-                ActualizarPuntajes(cPartidaActual);
+                if(cPartidaActual.Duracion < cMejoresPuntajes[cMejoresPuntajes.Length-1].Duracion)
+                    ActualizarPuntajes(cPartidaActual);
             }
             return puntaje;
-
-
-
         }
+
+        public static PuntajePartida[] MejoresPuntajes()
+        {
+            PuntajePartida[] mejores = new PuntajePartida[cMejoresPuntajes.Length];
+
+            for (int i = 0; i < cMejoresPuntajes.Length; i++)
+            {
+                mejores[i] = cMejoresPuntajes[i].PuntajeFinal();
+            }
+
+            return mejores;
+        }
+
     }
 }

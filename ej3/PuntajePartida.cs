@@ -7,6 +7,8 @@ namespace ej3
 {
     struct PuntajePartida
     {
+        public string jugador;
+
         public string inicio;
         public string fin;
 

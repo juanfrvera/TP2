@@ -14,7 +14,8 @@ namespace ej3
             {
                 Console.WriteLine("1.Jugar partida.");
                 Console.WriteLine("2.Ver puntajes.");
-                Console.WriteLine("3.Salir.");
+                Console.WriteLine("3.Modificar cantidad maxima de fallos.")
+                Console.WriteLine("4.Salir.");
 
                 String opcion = Console.ReadLine();
                 Console.Clear();
@@ -25,7 +26,11 @@ namespace ej3
                         break;
                     case "2":
                         VerPuntajes();
+                        break;
                     case "3":
+                        ModificarFallosMaximos();
+                        break;
+                    case "4":
                         salir = true;
                         break;
                     default:
@@ -41,13 +46,21 @@ namespace ej3
 
             Console.Write("Nombre: ");
             string palabra = Controlador.IniciarPartida(Console.ReadLine());
+            Console.Clear();
             DibujarPalabra(palabra);
 
             while (!salir) { 
                 Console.WriteLine();
                 Console.Write("Ingrese un caracter: ");
-                char letra = Convert.ToChar(Console.ReadLine().ToUpper());
-
+                char letra;
+                try
+                { 
+                    letra = Convert.ToChar(Console.ReadLine().ToUpper());
+                }
+                catch //Si no se ingresa una letra
+                {
+                    continue; //Para pasar a la proxima iteracion del while
+                }
                 Console.Clear();
 
                 ResultadoIntento intento = Controlador.Intento(letra);
@@ -69,12 +82,12 @@ namespace ej3
                     if (intento.estado == "Ganada")
                     {
                         salir = true;
-                        Console.WriteLine("Ganaste! pero estaba facil.");
+                        Console.WriteLine("Ganaste!");
 
                         PuntajePartida puntaje = Controlador.FinalizarPartida();
                         Console.WriteLine();
                         Console.WriteLine();
-                        Console.WriteLine("I+nicio de Partida: {0}", puntaje.inicio);
+                        Console.WriteLine("Inicio de Partida: {0}", puntaje.inicio);
                         Console.WriteLine("Fin de Partida: {0}", puntaje.fin);
                         Console.WriteLine("Duracion de Partida en Segundos: {0}", puntaje.duracion.Seconds);
                         Console.WriteLine("Fallos Cometidos: {0}", puntaje.fallos);
@@ -86,7 +99,7 @@ namespace ej3
                     if(intento.estado == "Perdida")
                     {
                         salir = true;
-                        Console.WriteLine("Perdiste, la vida es dura.");
+                        Console.WriteLine("Perdiste :(");
                         Console.ReadKey();
                     }
                 }
@@ -99,17 +112,18 @@ namespace ej3
         
         static void VerPuntajes()
         {
-            Console.WriteLine("Nombre"+new string(' ',5)+"Inicio"+new string(' ', 5)+"Fin" + new string(' ', 5) + "Puntaje");
-
             PuntajePartida[] puntajes = Controlador.MejoresPuntajes();
             foreach(PuntajePartida puntaje in puntajes)
             {
                 Console.WriteLine();
-                Console.WriteLine(puntaje.inicio);
-                Console.WriteLine("Fin de Partida: {0}", puntaje.fin);
-                Console.WriteLine("Duracion de Partida en Segundos: {0}", puntaje.duracion.Seconds);
-                Console.WriteLine("Fallos Cometidos: {0}", puntaje.fallos);
+                Console.WriteLine("Nombre de jugador: {0}", puntaje.jugador);
+                Console.WriteLine("Inicio de partida: {0}",puntaje.inicio);
+                Console.WriteLine("Fin de partida: {0}", puntaje.fin);
+                Console.WriteLine("Duracion de partida en segundos: {0}", puntaje.duracion.TotalSeconds);
+                Console.WriteLine("Fallos cometidos: {0}", puntaje.fallos);
             }
+            Console.ReadKey();
+            Console.Clear();
         }
 
         static void DibujarPalabra(string palabra)
@@ -118,6 +132,22 @@ namespace ej3
             {
                 Console.Write(caracter + " ");
             }
+        }
+
+        static void ModificarFallosMaximos()
+        {
+            Console.WriteLine("Ingrese nueva cantidad de fallos maximos: ");
+            byte fallos;
+            try
+            {
+                fallos = Convert.ToByte(Console.ReadLine());
+            }
+            catch
+            {
+                Console.WriteLine("Datos erroneos, el valor debe estar entre 0 y 255");
+            }
+
+            Controlador.
         }
 
         /*Escribir los mejores puntajes en pantalla*/
