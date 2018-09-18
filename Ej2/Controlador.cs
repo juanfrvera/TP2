@@ -17,7 +17,7 @@ namespace Ej2
         }
         public static void Inicializar()
         {
-            Inicializar(Cliente.TipoDocumento.DNI, "38456932", "Traita");
+            Inicializar(Cliente.TipoDocumento.DNI, "38456932", "Traitar");
         }
 
         public static double ConsultarSaldoCC()
