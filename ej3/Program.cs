@@ -14,7 +14,7 @@ namespace ej3
             {
                 Console.WriteLine("1.Jugar partida.");
                 Console.WriteLine("2.Ver puntajes.");
-                Console.WriteLine("3.Modificar cantidad maxima de fallos.")
+                Console.WriteLine("3.Modificar cantidad maxima de fallos.");
                 Console.WriteLine("4.Salir.");
 
                 String opcion = Console.ReadLine();
@@ -141,15 +141,18 @@ namespace ej3
             try
             {
                 fallos = Convert.ToByte(Console.ReadLine());
+                Controlador.ModificarFallosMaximos(fallos);
+                Console.WriteLine("Maximo de fallos modificados"  );
             }
             catch
             {
                 Console.WriteLine("Datos erroneos, el valor debe estar entre 0 y 255");
             }
 
-            Controlador.
+            Console.ReadKey();
+            Console.Clear();
         }
 
-        /*Escribir los mejores puntajes en pantalla*/
+
     }
 }

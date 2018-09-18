@@ -7,10 +7,13 @@ namespace ej3
 {
     class Juego
     {
-        private static Partida cPartidaActual;
-        public static Partida CPartidaActual { get { return cPartidaActual; } private set { cPartidaActual = value; } }
+        private static Juego cInstancia;  //Para aplicar Singleton
 
-        private static Partida[] cMejoresPuntajes;
+        private  Partida iPartidaActual;
+
+        public Partida IPartidaActual { get { return iPartidaActual; } private set { iPartidaActual = value; } }
+
+        private  Partida[] iMejoresPuntajes;
 
         private static string[] cPalabras = {
             "UNO", "COMETA", "TANQUE",//3
@@ -25,56 +28,83 @@ namespace ej3
             "MALETA","ZAPATILLA","TREINTA"//30
         };
 
-        static Juego()
+        private byte iFallosMaximos;
+
+        private Juego()
         {
-            cMejoresPuntajes = new Partida[5];
-            cMejoresPuntajes[0] = new Partida("KITU", new DateTime(2018, 8, 7, 20, 15, 13), new DateTime(2018, 8, 7, 20, 20, 13));
-            cMejoresPuntajes[1] = new Partida("KOSME FULANITO", new DateTime(1980, 8, 8, 17, 20, 00), new DateTime(1980, 8, 8, 17, 27, 13));
-            cMejoresPuntajes[2] = new Partida("PINGUINO ATOMICO", new DateTime(1871, 8, 8, 12, 30, 13), new DateTime(1871, 8, 8, 12, 45, 49));
-            cMejoresPuntajes[3] = new Partida("KAISER", new DateTime(2018, 8, 9, 12, 00, 00), new DateTime(2018, 8, 9, 12, 30, 26));
-            cMejoresPuntajes[4] = new Partida("BUNNYPANTS", new DateTime(2018, 8, 13, 23, 15, 13), new DateTime(2018, 8, 14, 00, 12, 15));
+            iMejoresPuntajes = new Partida[5];
+            iMejoresPuntajes[0] = new Partida("KITU", new DateTime(2018, 8, 7, 20, 15, 13), new DateTime(2018, 8, 7, 20, 20, 13));
+            iMejoresPuntajes[1] = new Partida("KOSME FULANITO", new DateTime(1980, 8, 8, 17, 20, 00), new DateTime(1980, 8, 8, 17, 27, 13));
+            iMejoresPuntajes[2] = new Partida("PINGUINO ATOMICO", new DateTime(1871, 8, 8, 12, 30, 13), new DateTime(1871, 8, 8, 12, 45, 49));
+            iMejoresPuntajes[3] = new Partida("KAISER", new DateTime(2018, 8, 9, 12, 00, 00), new DateTime(2018, 8, 9, 12, 30, 26));
+            iMejoresPuntajes[4] = new Partida("BUNNYPANTS", new DateTime(2018, 8, 13, 23, 15, 13), new DateTime(2018, 8, 14, 00, 12, 15));
+            iFallosMaximos = 10;
         }
 
+        //Propiedad
 
-        public static string IniciarPartida(string pNombre)
+        public static Juego Instancia
+        {
+            get
+            {
+                if (cInstancia == null) cInstancia = new Juego();
+                return cInstancia;                
+            }
+            private set { }
+        }
+
+        public byte IFallosMaximos
+        {
+            get
+            {
+                return iFallosMaximos;
+            }
+            set
+            {
+                iFallosMaximos = value;
+            }
+        }
+
+        //Mensajes
+        public string IniciarPartida(string pNombre)
         {
             Random rnd = new Random();
-            CPartidaActual = new Partida(pNombre, cPalabras[rnd.Next(0, cPalabras.Length)]);
-            return CPartidaActual.EstadoActual();
-        }
+            IPartidaActual = new Partida(pNombre, cPalabras[rnd.Next(0, cPalabras.Length)], iFallosMaximos);
+            return IPartidaActual.EstadoActual();
+        } 
 
-        public static void ActualizarPuntajes(Partida pPartida)
+        public void ActualizarPuntajes(Partida pPartida)
         {
 
-            int i = cMejoresPuntajes.Length-2;
-            while  ((i>=0) && (pPartida.Duracion < cMejoresPuntajes[i].Duracion))
+            int i = iMejoresPuntajes.Length-2;
+            while  ((i>=0) && (pPartida.Duracion < iMejoresPuntajes[i].Duracion))
             {
-                cMejoresPuntajes[i + 1] = cMejoresPuntajes[i];
+                iMejoresPuntajes[i + 1] = iMejoresPuntajes[i];
                 i--;
             }
-            cMejoresPuntajes[i+1] = pPartida;
+            iMejoresPuntajes[i+1] = pPartida;
         }
 
 
-        public static PuntajePartida FinalizarPartida()
+        public PuntajePartida FinalizarPartida()
         {
             PuntajePartida puntaje;
-            puntaje = cPartidaActual.Finalizar();
+            puntaje = iPartidaActual.Finalizar();
             if (puntaje.resultado == "Ganada")
             {
-                if(cPartidaActual.Duracion < cMejoresPuntajes[cMejoresPuntajes.Length-1].Duracion)
-                    ActualizarPuntajes(cPartidaActual);
+                if(iPartidaActual.Duracion < iMejoresPuntajes[iMejoresPuntajes.Length-1].Duracion)
+                    ActualizarPuntajes(iPartidaActual);
             }
             return puntaje;
         }
 
-        public static PuntajePartida[] MejoresPuntajes()
+        public PuntajePartida[] MejoresPuntajes()
         {
-            PuntajePartida[] mejores = new PuntajePartida[cMejoresPuntajes.Length];
+            PuntajePartida[] mejores = new PuntajePartida[cInstancia.iMejoresPuntajes.Length];
 
-            for (int i = 0; i < cMejoresPuntajes.Length; i++)
+            for (int i = 0; i < iMejoresPuntajes.Length; i++)
             {
-                mejores[i] = cMejoresPuntajes[i].PuntajeFinal();
+                mejores[i] = iMejoresPuntajes[i].PuntajeFinal();
             }
 
             return mejores;

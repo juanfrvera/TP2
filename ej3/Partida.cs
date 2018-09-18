@@ -33,12 +33,13 @@ namespace ej3
         {
             Partida.cFallosMaximos = 10;
         }
-        public Partida(string pNombre, string pPalabra)
+        public Partida(string pNombre, string pPalabra, byte pFallosMaximos)
         {
             this.iNombreJugador = pNombre;
             this.iPalabra = new Palabra(pPalabra);
             this.iInicio = DateTime.Now;
             this.iEstado = EstadoPartida.EnCurso;
+            Partida.cFallosMaximos = pFallosMaximos;
         }
         public Partida(String pNombre, DateTime pInicio, DateTime pFin) //Constructor para puntajes precargados
         {

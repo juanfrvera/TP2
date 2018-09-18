@@ -7,23 +7,44 @@ namespace ej3
 {
     class Controlador
     {
+        private static Juego cJuego;
+
+
+        public static Juego CJuego
+        {
+            get
+            {
+                if (cJuego == null) cJuego = Juego.Instancia;
+                return cJuego;
+            }
+            private set {}
+        }   
+
+
+        //Mensajes
         public static string IniciarPartida(string pNombre)
         {
-            return Juego.IniciarPartida(pNombre);
+            return CJuego.IniciarPartida(pNombre);
         }
 
         public static ResultadoIntento Intento(char pLetra)
         {
-            return Juego.CPartidaActual.Intento(pLetra);
+            return CJuego.IPartidaActual.Intento(pLetra);
         }
 
         public static PuntajePartida FinalizarPartida()
         {
-            return Juego.FinalizarPartida();
+            return CJuego.FinalizarPartida();
         }
         public static PuntajePartida[] MejoresPuntajes()
         {
-            return Juego.MejoresPuntajes();
+            return CJuego.MejoresPuntajes();
+
+        }
+
+        public static void ModificarFallosMaximos(byte pFallos)
+        {
+            CJuego.IFallosMaximos = pFallos;
         }
     }
 }
